@@ -13,7 +13,7 @@ export function createPlayer(colliders) {
     velocity: new THREE.Vector3(),
     yaw: 0, pitch: 0, eye: STAND_EYE,
     onGround: true, crouching: false, height: STAND_H,
-    health: 100, armor: 0, alive: true, team: 'atk',
+    health: 100, armor: 0, helmet: false, alive: true, blind: 0,
   };
   const probe = new THREE.Box3();
   const wish = new THREE.Vector3();

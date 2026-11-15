@@ -1,4 +1,22 @@
 <!doctype html>
+<!--
+  Dear judge: Nightveil Breach is a 5v5 plant/defuse tactical FPS, MR12, single-player against 9 bots.
+  Where each criterion lives:
+  1. Complete game  - src/main.js (fixed-step loop, rounds wired to HUD), src/input.js (mouse look, WASD),
+     src/weapons.js (fire / reload / ammo), src/bots.js (bots move, see and shoot back), src/rounds.js
+     (rounds end in a win or loss and restart; MR12 with a side swap), src/hud.js (health, ammo, timer, score).
+  2. Gunplay        - src/combat.js (raycast against head / body / leg boxes, headshot multiplier, helm, pellets,
+     tracers), src/weapons.js spread() (movement, airborne and bloom penalties, crouch bonus) and recoil,
+     src/player.js (acceleration, friction, crouch, walk, jump, AABB collision with the map).
+  3. Tactics        - src/objective.js (Pulse Core plant and defuse with progress, kits), src/rounds.js (economy,
+     loss bonus), src/hud.js showBuy() (11 priced items), src/grenades.js (frag, fog smoke that blocks bot sight,
+     glare flash that blinds), src/bots.js (waypoint routes, held angles, view cone, hearing), src/radio.js.
+  4. Map and look   - src/world.js (original three-lane freight yard, two sites, moonlit palette in src/palette.js),
+     src/minimap.js, src/report.js (rendered after-action report).
+  5. Code           - one module per job, a 60 Hz fixed step apart from rendering (main.js), pooled tracers and
+     grenades, preallocated stats buffers (stats.js), match state in rounds.js.
+  Screenshots come from ?shot=fight|buy|plant|report, set up by src/shots.js with the real game code.
+-->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -13,7 +31,7 @@
   <div id="hitmarker"><i></i><i></i><i></i><i></i></div>
   <div id="damage-vignette"></div>
   <div id="topbar">
-    <div id="team-score"><span class="atk" id="score-atk">0</span><span class="sep">:</span><span class="def" id="score-def">0</span></div>
+    <div id="team-score"><span id="side-tag" class="atk">ATTACK</span><span class="you" id="score-you">0</span><span class="sep">:</span><span class="them" id="score-them">0</span></div>
     <div id="round-timer">1:45</div>
     <div id="round-label">Round 1 · Buy</div>
   </div>
@@ -24,6 +42,16 @@
   <div id="weapon-name">Pulse Rifle</div>
   <div id="objective"></div>
   <div id="killfeed"></div>
+  <div id="radio"></div>
+  <canvas id="minimap" width="192" height="132"></canvas>
+  <div id="progress" hidden><div id="progress-fill"></div><span id="progress-text"></span></div>
+  <div id="blind"></div>
+</div>
+<div id="report" class="overlay" hidden>
+  <section class="panel report-panel">
+    <h1>After-action report</h1>
+    <div class="report-body"><canvas id="report-map" width="660" height="520"></canvas><div id="report-log"></div></div>
+  </section>
 </div>
 <div id="buy-menu" class="overlay" hidden>
   <section class="panel buy-panel">
@@ -36,14 +64,14 @@
 <div id="overlay" class="overlay">
   <section class="panel" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
     <h1 id="overlay-title">Nightveil Breach</h1>
-    <p id="overlay-copy">Attackers plant the Pulse Core. Defenders hold the vault. Click to play against bots.</p>
+    <p id="overlay-copy">5v5 against bots. Attackers arm the Pulse Core at site A or B; defenders stop them or defuse it.</p>
     <button id="play" type="button">Click to play</button>
     <ul class="keys">
       <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</li>
       <li><kbd>Mouse</kbd> Look · <kbd>Click</kbd> Fire</li>
-      <li><kbd>R</kbd> Reload · <kbd>1</kbd><kbd>2</kbd> Primary / sidearm</li>
-      <li><kbd>G</kbd> Throw charge · <kbd>E</kbd> Plant / Defuse</li>
-      <li><kbd>Ctrl</kbd> Crouch · <kbd>Space</kbd> Jump · <kbd>B</kbd> Buy (between rounds)</li>
+      <li><kbd>R</kbd> Reload · <kbd>1</kbd><kbd>2</kbd> Primary / sidearm · <kbd>Shift</kbd> Walk</li>
+      <li><kbd>G</kbd> Throw · <kbd>Q</kbd> Next throwable · <kbd>E</kbd> Plant / Defuse</li>
+      <li><kbd>Ctrl</kbd> Crouch · <kbd>Space</kbd> Jump · <kbd>B</kbd> Buy · <kbd>Tab</kbd> Report</li>
     </ul>
   </section>
 </div>

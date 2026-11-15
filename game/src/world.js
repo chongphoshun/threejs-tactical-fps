@@ -25,6 +25,7 @@ export function createWorld(scene) {
   const colliders = [];
   const shootables = [];
   const occluders = [];
+  const rects = [];
   const mats = {
     floor: new THREE.MeshStandardMaterial({ color: PALETTE.floor, roughness: 0.92, map: panelTexture(PALETTE.floor, '#2b3543', 8) }),
     wall: new THREE.MeshStandardMaterial({ color: PALETTE.wall, roughness: 0.8, map: panelTexture(PALETTE.wall, '#46546a', 2) }),
@@ -51,6 +52,7 @@ export function createWorld(scene) {
     colliders.push(b);
     shootables.push(m);
     occluders.push(m);
+    rects.push({ x, z, w, d });
     if (h >= 4) {
       const cap = new THREE.Mesh(new THREE.BoxGeometry(w + 0.02, 0.08, d + 0.02), mats.trim);
       cap.position.set(x, y + h, z);
@@ -125,9 +127,9 @@ export function createWorld(scene) {
 
   // Waypoints for bot routes (graph across lanes)
   const nodes = [
-    [-26, -15], [-12, -12], [2, -12], [20, -11], [22, -15],
-    [-26, 0], [-10, -3], [8, -4], [21, 0], [26, 0],
-    [-26, 15], [-12, 12], [4, 11], [22, 11], [20, 15],
+    [-26, -9.5], [-12, -9.5], [2, -9.5], [20, -9.5], [22, -15],
+    [-26, 0], [-18, -4.5], [8, -4.5], [20.5, -4.5], [26, 0],
+    [-26, 9.5], [-12, 9.5], [4, 9.5], [20.5, 9.5], [20, 15],
   ].map(([x, z]) => new THREE.Vector3(x, 0, z));
   const links = [
     [0, 1], [1, 2], [2, 3], [3, 4], [5, 6], [6, 7], [7, 8], [8, 9],
@@ -141,7 +143,7 @@ export function createWorld(scene) {
     def: [[26, -3], [26, 3], [24, -10], [24, 10], [27, 0]].map(([x, z]) => new THREE.Vector3(x, 0, z)),
   };
 
-  return { colliders, shootables, occluders, sites, nodes, neighbors, spawns };
+  return { colliders, shootables, occluders, rects, sites, nodes, neighbors, spawns };
 }
 
 // Breadth-first route between waypoint indices

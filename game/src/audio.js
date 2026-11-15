@@ -16,7 +16,7 @@ function beep(freq, dur, type = 'square', gain = 0.04, slide = 0) {
   o.connect(g); g.connect(c.destination);
   o.start(); o.stop(c.currentTime + dur);
 }
-export const sfx = {
+const SOUNDS = {
   shoot() { beep(180, 0.06, 'sawtooth', 0.05, -120); },
   reload() { beep(220, 0.08, 'triangle', 0.03); setTimeout(() => beep(320, 0.1, 'triangle', 0.03), 120); },
   hit() { beep(520, 0.04, 'square', 0.03); },
@@ -27,3 +27,11 @@ export const sfx = {
   round() { beep(300, 0.3, 'triangle', 0.04); },
   hurt() { beep(90, 0.12, 'sawtooth', 0.05); },
 };
+
+// sfx: plays a named sound; silent when audio is blocked or the page is a screenshot setup.
+export function createSfx(muted) {
+  return (name) => {
+    if (muted) return;
+    try { SOUNDS[name](); } catch { /* the browser has not allowed audio yet */ }
+  };
+}

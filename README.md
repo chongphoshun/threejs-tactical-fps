@@ -4,12 +4,13 @@
 [![rank](https://make.fun/badge/threejs-fps-02/chongphoshun/threejs-tactical-fps/rank.svg)](https://make.fun/bounty/threejs-fps-02/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=threejs-fps-02)
 [![reward](https://make.fun/badge/threejs-fps-02/chongphoshun/threejs-tactical-fps/reward.svg)](https://make.fun/bounty/threejs-fps-02?utm_source=github&utm_medium=readme&utm_campaign=threejs-fps-02)
 
-**Nightveil Breach** is a round-based tactical first-person shooter on three.js 0.187.0: you and four attacker bots carry the Pulse Core across a moonlit freight yard and arm it at site A or B, while five defender bots follow waypoint routes, hold angles, react to gunfire they hear and rush to defuse. Between rounds you earn cash (win/loss/kill/plant rewards with a loss streak bonus) and spend it in a buy menu on the Hornet SMG, Pulse Rifle, Longwatch DMR, Kevlite vest and Frag Charges. First to 7 rounds wins.
+**Nightveil Breach** is a 5v5 plant/defuse tactical first-person shooter on three.js 0.187.0, single-player against nine bots, MR12 (sides swap after round 12, first to 13). Attackers carry the Pulse Core through an original moonlit freight yard (North Catwalk, Mid Alley, South Vault) and arm it at site A or B; defenders hold angles, react to gunfire they hear and defuse it.
 
-- Gunplay: hitscan against head / body / leg boxes (headshots multiply damage), recoil that kicks the view, spread that grows when moving, jumping or holding the trigger and tightens when crouched.
-- Movement: acceleration and friction, crouch, walk (Shift), jump, axis-separated collision with the map.
-- Code: `game/src/` holds one module per job (world, player, weapons, bots, grenades, rounds, hud, input, audio) and `main.js` runs a fixed 60 Hz simulation apart from rendering.
-- Sounds are synthesised in WebAudio; all art is procedural geometry and canvas textures. No network requests.
+- Gunplay: hitscan against head / body / leg boxes with per-weapon headshot multipliers, helm, pellets and range falloff; recoil kicks the view; spread grows when moving, airborne or holding the trigger and tightens when crouched.
+- Movement: acceleration and friction, crouch, walk, jump, axis-separated collision with the map.
+- Tactics: per-round economy (win, loss streak, kill, plant and defuse rewards) and a buy menu of 6 guns, vest, helm, frag, fog smoke (blocks bot sight), glare flash (blinds) and a defuse kit; bots follow waypoint routes, hold positions, use a view cone and hearing, and call contacts on the radio.
+- Readouts: HUD with health, armour, ammo, round timer, score, money, killfeed, radio, minimap and a rendered after-action report (Tab) drawing every bot's route, held spots, hit sightlines, a shot log and per-round economy.
+- Code: one module per job under `game/src/` (21 modules), a 60 Hz fixed-step simulation apart from rendering, pooled tracers and grenades, preallocated stats buffers. Sounds are synthesised with WebAudio; art is procedural geometry and canvas textures; no network requests.
 
 ## Run it
 

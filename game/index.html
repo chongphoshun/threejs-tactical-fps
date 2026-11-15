@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nightveil Breach — tactical three.js FPS</title>
+<link rel="stylesheet" href="./css/hud.css">
+</head>
+<body>
+<div id="game"></div>
+<div id="hud" aria-hidden="true">
+  <div id="crosshair"><i></i><i></i><i></i><i></i></div>
+  <div id="hitmarker"><i></i><i></i><i></i><i></i></div>
+  <div id="damage-vignette"></div>
+  <div id="topbar">
+    <div id="team-score"><span class="atk" id="score-atk">0</span><span class="sep">:</span><span class="def" id="score-def">0</span></div>
+    <div id="round-timer">1:45</div>
+    <div id="round-label">Round 1 · Buy</div>
+  </div>
+  <div id="health-bar"><div id="health-fill"></div></div>
+  <span id="health-text">HP 100</span>
+  <div id="ammo"><span id="ammo-mag">30</span><span id="ammo-reserve">/ 90</span></div>
+  <div id="money">$800</div>
+  <div id="weapon-name">Pulse Rifle</div>
+  <div id="objective"></div>
+  <div id="killfeed"></div>
+</div>
+<div id="buy-menu" class="overlay" hidden>
+  <section class="panel buy-panel">
+    <h1>Buy phase</h1>
+    <p id="buy-money">Cash $800 · choose loadout</p>
+    <div id="buy-grid"></div>
+    <button id="buy-ready" type="button">Ready (Enter)</button>
+  </section>
+</div>
+<div id="overlay" class="overlay">
+  <section class="panel" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+    <h1 id="overlay-title">Nightveil Breach</h1>
+    <p id="overlay-copy">Attackers plant the Pulse Core. Defenders hold the vault. Click to play against bots.</p>
+    <button id="play" type="button">Click to play</button>
+    <ul class="keys">
+      <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</li>
+      <li><kbd>Mouse</kbd> Look · <kbd>Click</kbd> Fire</li>
+      <li><kbd>R</kbd> Reload · <kbd>1</kbd><kbd>2</kbd> Primary / sidearm</li>
+      <li><kbd>G</kbd> Throw charge · <kbd>E</kbd> Plant / Defuse</li>
+      <li><kbd>Ctrl</kbd> Crouch · <kbd>Space</kbd> Jump · <kbd>B</kbd> Buy (between rounds)</li>
+    </ul>
+  </section>
+</div>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.min.js"
+  }
+}
+</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

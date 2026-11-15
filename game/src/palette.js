@@ -1,0 +1,15 @@
+export const PALETTE = {
+  canvas: '#0d1118',
+  sky: '#1c2636',
+  floor: '#3a4656',
+  wall: '#56657a',
+  trim: '#3dd6c6',
+  accentWarm: '#e85d4c',
+  accentCool: '#4c8fe8',
+  metal: '#8a9bb0',
+  light: '#cfe3ff',
+  fog: '#1c2636',
+  atk: '#e85d4c',
+  def: '#4c8fe8',
+  plant: '#f0b429',
+};
